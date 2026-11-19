@@ -1,0 +1,2809 @@
+/* ============================================================
+   Redesign — one minimal, matching system over the 4 screens.
+   Loaded after globals.css, so these tokens and rules win.
+   Screens: Hero · Date · Venue · Footer.
+   ============================================================ */
+
+:root {
+  /* one cream everywhere, blush as the only second field */
+  --bg: #fcf6ef;
+  /* ground cream   */
+  --blush: #f7e6e1;
+  /* second field   */
+  --blush-deep: #f1d9d2;
+  /* toward the dusk footer */
+  --ink: #4a2f38;
+  /* warm plum-brown */
+  --ink-soft: #8a6f78;
+  /* secondary notes */
+  --rose: #c24763;
+  /* the one accent */
+  --rose-deep: #a83a54;
+  --rose-soft: #e7b9c3;
+  --gold-name: #a3702e;
+  /* footer names only */
+  --line: rgba(74, 47, 56, .14);
+  --card: #fffaf4;
+  /* solid card */
+  /* keep hero/intro happy: re-point the old generic tokens */
+  --text: var(--ink-soft);
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Jost', system-ui, sans-serif;
+  --script: 'Pinyon Script', 'Snell Roundhand', cursive;
+}
+
+/* column: portrait invitation, a touch wider on big screens than before */
+:root {
+  --col: 100vw
+}
+
+@media (min-width:600px) {
+  :root {
+    --col: 600px
+  }
+}
+
+@media (min-width:1024px) {
+  :root {
+    --col: 560px
+  }
+}
+
+/* the day sets as you scroll: cream (morning) -> blush (midday) -> pale blue (evening).
+   Warm top for Hero/Photos/Calendar, then pale blue from the Countdown onward. */
+:root {
+  --eve: #dde8f0;
+  --eve-deep: #cfe0ec;
+  --eve-ink: #3a4654
+}
+
+/* warm the whole page; the evening blue arrives only at the end (map + footer) */
+.page {
+  background: linear-gradient(180deg, var(--bg) 0%, var(--bg) 48%, var(--blush) 100%)
+}
+
+/* ---------- Hero recolour (structure kept from globals) ---------- */
+.hero {
+  background: var(--bg)
+}
+
+.hero::after {
+  background: linear-gradient(180deg, rgba(252, 246, 239, 0), var(--blush))
+}
+
+.hero__shade {
+  background: linear-gradient(180deg, rgba(252, 246, 239, 0) 0, rgba(252, 246, 239, 0) 70%, rgba(252, 246, 239, .42) 100%)
+}
+
+.hero__rule {
+  background: linear-gradient(90deg, transparent, var(--rose), transparent)
+}
+
+.hero__pre {
+  color: var(--ink-soft)
+}
+
+.hero__date {
+  font-size: clamp(13px, 3.4cqw, 15px);
+  letter-spacing: .06em;
+  text-transform: none;
+  color: var(--ink-soft)
+}
+
+/* the open button: bigger tap target, matching tint */
+.obtn {
+  height: 46px;
+  padding: 0 22px 0 24px
+}
+
+.obtn__txt {
+  font-size: 11px;
+  letter-spacing: .2em
+}
+
+.obtn::after {
+  border-color: var(--rose-soft)
+}
+
+/* ---------- shared screen scaffold ---------- */
+.screen {
+  position: relative;
+  z-index: 1;
+  width: var(--col);
+  max-width: 100%;
+  margin: 0 auto;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(56px, 11svh, 104px) clamp(20px, 6vw, 40px);
+  text-align: center;
+  color: var(--ink)
+}
+
+.screen__eyebrow {
+  margin: 0 0 clamp(18px, 4vh, 30px);
+  font: 400 16px/1 var(--sans);
+  letter-spacing: .12em;
+  color: var(--rose);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .9s ease, transform .9s cubic-bezier(.2, .7, .2, 1)
+}
+
+.screen--in .screen__eyebrow {
+  opacity: 1;
+  transform: none
+}
+
+/* reveal helper: children rise in order once the screen is seen */
+
+/* ============================================================
+   DATE screen — a clean calendar + one quiet countdown line
+   ============================================================ */
+/* the wedding day — the one the thread will circle in stage 2 */
+
+/* ============================================================
+   VENUE screen — the map framed in a solid panel
+   ============================================================ */
+.vp__panel {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 30px 70px -40px rgba(74, 47, 56, .4), inset 0 1px 0 rgba(255, 255, 255, .8);
+  opacity: 0;
+  transform: translateY(26px) scale(.985);
+  transition: opacity 1s ease, transform 1.1s cubic-bezier(.2, .7, .2, 1)
+}
+
+.screen--in .vp__panel {
+  opacity: 1;
+  transform: none
+}
+
+.vp__map {
+  position: relative;
+  aspect-ratio: 4/3;
+  width: 100%;
+  background: var(--bg);
+  overflow: hidden
+}
+
+.vp__frame {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: calc(100% + 44px);
+  border: 0;
+  display: block;
+  filter: saturate(.82) brightness(1.03)
+}
+
+.vp__body {
+  padding: clamp(20px, 5vw, 26px) clamp(20px, 5vw, 28px) clamp(22px, 5vw, 28px)
+}
+
+.vp__name {
+  display: block;
+  font: 500 clamp(20px, 5.4vw, 24px)/1.25 var(--serif);
+  color: var(--ink)
+}
+
+.vp__addr {
+  display: block;
+  margin-top: 6px;
+  font: 400 15px/1.5 var(--sans);
+  color: var(--ink-soft)
+}
+
+.vp__acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 22px
+}
+
+/* our rose pin, overlaid dead-centre on the map (its tip marks the house) */
+.vp__pin {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 22px);
+  width: 30px;
+  height: 40px;
+  margin: -40px 0 0 -15px;
+  transform-origin: 50% 100%;
+  pointer-events: none;
+  z-index: 2
+}
+
+.vp__pin svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 6px 8px rgba(74, 47, 56, .4))
+}
+
+.vp--drop .vp__pin {
+  animation: vpDrop .7s cubic-bezier(.3, 1.4, .5, 1) both
+}
+
+@keyframes vpDrop {
+  0% {
+    transform: translateY(-120px) scale(.7);
+    opacity: 0
+  }
+
+  60% {
+    opacity: 1
+  }
+
+  100% {
+    transform: none;
+    opacity: 1
+  }
+}
+
+/* ---------- one button system, matching, 48px tall ---------- */
+
+/* the Add-to-Calendar button inherits the new system */
+
+/* ============================================================
+   MOMENTS — three memory photos as tidy polaroids
+   ============================================================ */
+
+/* soft spacing so the watercolor calendar and lace countdown breathe in the new flow */
+.wc,
+.lcx {
+  margin-top: clamp(40px, 9svh, 90px)
+}
+
+/* countdown stays warm (blush) — the evening begins only at the map + footer */
+.lcx {
+  --cbg: #f7e6e1;
+  --ctx: #4a2f38
+}
+
+/* the map (the section just above the footer) is the transition into the blue:
+   blush at the top easing down to pale blue, then the footer continues it */
+.vp.screen {
+  background: linear-gradient(180deg, var(--blush) 0%, #e4e6ee 42%, var(--eve) 100%)
+}
+
+.vp .screen__eyebrow {
+  color: var(--eve-ink)
+}
+
+#invitation {
+  scroll-margin-top: 0
+}
+
+/* ============================================================
+   SCROLL THREAD — one line that draws down the page as you scroll
+   ============================================================ */
+.thread {
+  position: fixed;
+  left: 13px;
+  top: 12vh;
+  height: 76vh;
+  width: 16px;
+  z-index: 30;
+  pointer-events: none;
+  opacity: .82
+}
+
+@media (min-width:600px) {
+  .thread {
+    left: calc(50% - 300px - 30px)
+  }
+}
+
+@media (min-width:1024px) {
+  .thread {
+    left: calc(50% - 280px - 32px)
+  }
+}
+
+.thread__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible
+}
+
+/* a running embroidery stitch: short dashes, drawn with round caps */
+.thread__track {
+  fill: none;
+  stroke: rgba(74, 47, 56, .05);
+  stroke-width: 1.2;
+  stroke-dasharray: 5 5;
+  stroke-linecap: round
+}
+
+.thread__line {
+  fill: none;
+  stroke: url(#thgrad);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: 5 5;
+  filter: drop-shadow(0 0 2px rgba(200, 120, 150, .22))
+}
+
+.thread__knot {
+  position: absolute;
+  width: 5.5px;
+  height: 5.5px;
+  margin: -2.75px 0 0 -2.75px;
+  border-radius: 50%;
+  background: #fffaf4;
+  box-shadow: inset 0 0 0 1px rgba(194, 71, 99, .3);
+  transform: scale(.7);
+  opacity: .4;
+  transition: transform .5s cubic-bezier(.3, 1.5, .5, 1), opacity .4s ease, box-shadow .4s ease
+}
+
+.thread__knot--on {
+  opacity: .95;
+  transform: scale(1);
+  animation: thKnotGlow 3.2s ease-in-out infinite
+}
+
+@keyframes thKnotGlow {
+
+  0%,
+  100% {
+    box-shadow: inset 0 0 0 1.4px rgba(194, 71, 99, .7), 0 0 4px rgba(194, 71, 99, .25)
+  }
+
+  50% {
+    box-shadow: inset 0 0 0 1.4px rgba(194, 71, 99, .85), 0 0 9px rgba(216, 120, 150, .55)
+  }
+}
+
+.thread__tip {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff, #e7a7ba 60%, #cf7d97);
+  opacity: 0;
+  transition: opacity .3s ease;
+  animation: thTipGlow 2.2s ease-in-out infinite
+}
+
+@keyframes thTipGlow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 6px 1px rgba(207, 125, 151, .5);
+    transform: scale(1)
+  }
+
+  50% {
+    box-shadow: 0 0 13px 3px rgba(224, 145, 175, .8);
+    transform: scale(1.22)
+  }
+}
+
+/* the love-knot that ties at the footer */
+.thread__tie {
+  position: absolute;
+  width: 26px;
+  height: 20px;
+  margin: -10px 0 0 -13px;
+  opacity: 0;
+  transform: scale(.4) rotate(-8deg);
+  transition: opacity .5s ease, transform .7s cubic-bezier(.3, 1.5, .5, 1)
+}
+
+.thread__tie svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 0 4px rgba(150, 120, 190, .4))
+}
+
+.thread__tie path {
+  fill: none;
+  stroke: #b3a0d4;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 1.1s ease .1s
+}
+
+.thread__tie--on {
+  opacity: 1;
+  transform: scale(1) rotate(0)
+}
+
+.thread__tie--on path {
+  stroke-dashoffset: 0
+}
+
+.thread__tie--on svg {
+  animation: thTieGlow 3s ease-in-out 1.1s infinite
+}
+
+@keyframes thTieGlow {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 4px rgba(150, 120, 190, .4))
+  }
+
+  50% {
+    filter: drop-shadow(0 0 10px rgba(179, 160, 212, .8))
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .thread__tip {
+    display: none
+  }
+
+  .thread__knot,
+  .thread__tie,
+  .thread__tie path {
+    transition: none
+  }
+
+  .thread__knot--on,
+  .thread__tie--on svg {
+    animation: none
+  }
+}
+
+@media (prefers-reduced-transparency:reduce) {
+  .thread__knot {
+    background: #fffaf4
+  }
+}
+
+/* ---------- Intro: a Skip while the envelope plays ---------- */
+.intro__skip {
+  position: absolute;
+  right: max(16px, env(safe-area-inset-right));
+  top: max(16px, env(safe-area-inset-top));
+  z-index: 4;
+  min-height: 40px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(74, 47, 56, .18);
+  background: rgba(255, 250, 244, .78);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: var(--ink-soft);
+  font: 400 13px/1 var(--sans);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  cursor: pointer
+}
+
+.intro__skip:active {
+  transform: scale(.96)
+}
+
+/* ---------- music button: out of the way, matching ---------- */
+.music {
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(74, 47, 56, .16);
+  background: linear-gradient(180deg, rgba(255, 250, 244, .82), rgba(255, 250, 244, .5));
+  color: var(--ink-soft)
+}
+
+/* ---------- reduced motion: show everything, no travel ---------- */
+/* ============================================================
+   CLOSING footer — pale blue-hour + violet/beige petal names
+   ============================================================ */
+.closing-wrap {
+  width: 100%;
+  margin: 0
+}
+
+/* footer sits centred on pale blue; the scene is a portrait frame so the desktop
+   never stretches or crops it (no overflow), matching the hero's framing */
+.cf {
+  position: relative;
+  width: 100%;
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: var(--eve)
+}
+
+.cf__frame {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden
+}
+
+@media (min-width:600px) {
+  .cf__frame {
+    width: var(--fw);
+    height: min(100svh, calc(var(--fw)*16/9));
+    border-radius: 8px;
+    box-shadow: 0 44px 90px -54px rgba(58, 70, 84, .6)
+  }
+}
+
+.cf__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 58%;
+  transform: scale(1.03);
+  animation: cfKB 28s ease-in-out infinite alternate
+}
+
+@keyframes cfKB {
+  from {
+    transform: scale(1.03)
+  }
+
+  to {
+    transform: scale(1.1)
+  }
+}
+
+.cf__veil {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(221, 232, 240, .65) 0, rgba(221, 232, 240, 0) 26%, rgba(210, 226, 238, 0) 70%, rgba(205, 210, 228, .4) 100%)
+}
+
+/* names: smaller, centred column near the top */
+.cf__names {
+  position: absolute;
+  left: 3%;
+  right: 3%;
+  top: 4%;
+  height: 33%;
+  z-index: 3;
+  margin: 0
+}
+
+.cf__names .names-fx {
+  position: absolute;
+  inset: 0
+}
+
+.cf__names .names-fx canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 3px 8px rgba(40, 50, 90, .3))
+}
+
+/* soft petals drifting down the scene */
+.cf__petals {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none
+}
+
+.cf__petals i {
+  position: absolute;
+  top: -7%;
+  width: 11px;
+  height: 14px;
+  border-radius: 72% 0 72% 0;
+  opacity: 0;
+  left: calc(4% + var(--d)*8%);
+  animation: cfFall calc(10s + var(--d)*0.6s) linear calc(var(--d)*-1.6s) infinite
+}
+
+.cf__petals i:nth-child(odd) {
+  background: radial-gradient(circle at 30% 28%, #c3abdd, #7e57ab)
+}
+
+.cf__petals i:nth-child(even) {
+  background: radial-gradient(circle at 30% 28%, #f1e8d6, #cabf9f)
+}
+
+.cf__petals i:nth-child(3n) {
+  width: 9px;
+  height: 12px
+}
+
+@keyframes cfFall {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateX(0) rotate(0)
+  }
+
+  8% {
+    opacity: .85
+  }
+
+  88% {
+    opacity: .7
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(104svh) translateX(34px) rotate(320deg)
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+  .screen__eyebrow,
+  .vp__panel {
+    opacity: 1;
+    transform: rotate(var(--t, 0deg));
+    transition: none
+  }
+
+  .vp--drop .vp__pin {
+    animation: none
+  }
+
+  .cf__bg {
+    animation: none;
+    transform: none
+  }
+
+  .cf__petals {
+    display: none
+  }
+}
+
+@media (prefers-reduced-transparency:reduce) {
+
+  .intro__skip,
+  .music {
+    background: var(--card);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none
+  }
+}
+
+/* ============================================================
+   VENUE switcher — groom's home (Nikah) / bride's home
+   ============================================================ */
+.vp__tabs {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--n, 2), 1fr);
+  margin: 14px 14px 0;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--blush);
+  border: 1px solid var(--line)
+}
+
+.vp__pill {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc((100% - 8px)/var(--n, 2));
+  border-radius: 999px;
+  background: var(--card);
+  box-shadow: 0 6px 16px -8px rgba(74, 47, 56, .45), inset 0 0 0 1px var(--rose-soft);
+  transform: translateX(calc(var(--i, 0)*100%));
+  transition: transform .55s cubic-bezier(.3, 1.2, .4, 1)
+}
+
+.vp__tab {
+  position: relative;
+  z-index: 1;
+  min-height: 44px;
+  padding: 10px 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 999px;
+  font: 500 15px/1.1 var(--sans);
+  letter-spacing: .01em;
+  color: var(--ink-soft);
+  transition: color .3s
+}
+
+.vp__tab[aria-selected="true"] {
+  color: var(--rose-deep)
+}
+
+.vp__tab:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px
+}
+
+.vp__tabs {
+  margin-bottom: 14px
+}
+
+.vp__layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s ease
+}
+
+.vp__layer--on {
+  opacity: 1;
+  pointer-events: auto
+}
+
+.vp__soon {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(160deg, var(--blush), #e4e6ee);
+  font: italic 500 18px/1 var(--serif);
+  color: var(--ink-soft)
+}
+
+.vp__tag {
+  display: block;
+  margin: 0 0 8px;
+  font: 500 12.5px/1.2 var(--sans);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--rose)
+}
+
+.vp__body {
+  animation: vpIn .6s cubic-bezier(.2, .7, .2, 1) both
+}
+
+@keyframes vpIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px)
+  }
+
+  to {
+    opacity: 1;
+    transform: none
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+  .vp__pill,
+  .vp__layer {
+    transition: none
+  }
+
+  .vp__body {
+    animation: none
+  }
+}
+
+/* ============================================================
+   Colour & desktop polish
+   ============================================================ */
+/* countdown lace: from cold silver to warm champagne, so it belongs with the rose-gold ribbon */
+.lcx__lace img {
+  filter: sepia(.42) saturate(1.1) hue-rotate(-16deg) brightness(.99) contrast(.98)
+}
+
+.lcx {
+  --clb: rgba(222, 196, 160, .4)
+}
+
+/* the sky: one fixed layer behind the page that moves from morning cream to evening blue as you scroll
+   (set by ScrollThread). On a phone the page fills it; on a desktop it fills the sides, so there is
+   never an empty beige gutter. */
+.sky {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: var(--sky, #fcf6ef);
+  pointer-events: none
+}
+
+.page {
+  background: transparent
+}
+
+/* the Where screen takes its colour from the sky, so column and sides are one continuous evening */
+.vp.screen {
+  background: transparent
+}
+
+/* ============================================================
+   Music picker — a small sheet above the music button
+   ============================================================ */
+.mp__pop {
+  position: fixed;
+  z-index: 41;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: calc(max(20px, env(safe-area-inset-bottom)) + 56px);
+  width: min(264px, calc(100vw - 32px));
+  padding: 14px 14px 12px;
+  border-radius: 20px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  box-shadow: 0 24px 50px -22px rgba(74, 47, 56, .5), 0 2px 8px rgba(74, 47, 56, .08);
+  color: var(--ink);
+  text-align: left;
+  transform-origin: 100% 100%;
+  animation: mpIn .2s cubic-bezier(.23, 1, .32, 1) both
+}
+
+@keyframes mpIn {
+  from {
+    opacity: 0;
+    transform: scale(.94) translateY(6px)
+  }
+
+  to {
+    opacity: 1;
+    transform: none
+  }
+}
+
+.mp__hd {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 2px 8px
+}
+
+.mp__hd b {
+  font: 500 18px/1 var(--serif);
+  color: var(--ink)
+}
+
+.mp__pp {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid var(--rose-soft);
+  background: var(--card);
+  color: var(--rose-deep);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform .12s ease-out, background .2s
+}
+
+.mp__pp:active {
+  transform: scale(.94)
+}
+
+.mp__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px
+}
+
+.mp__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 10px;
+  border-radius: 14px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: background .2s, border-color .2s;
+  -webkit-tap-highlight-color: transparent
+}
+
+.mp__row input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer
+}
+
+.mp__row:focus-within {
+  outline: 2px solid var(--rose);
+  outline-offset: 1px
+}
+
+.mp__row--on {
+  background: var(--blush);
+  border-color: var(--rose-soft)
+}
+
+.mp__nm {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font: 500 16px/1.1 var(--sans);
+  color: var(--ink)
+}
+
+.mp__nm small {
+  font: 400 13px/1.2 var(--sans);
+  color: var(--ink-soft)
+}
+
+.mp__eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  width: 16px;
+  height: 14px;
+  flex: none;
+  opacity: 0;
+  transition: opacity .2s
+}
+
+.mp__row--on .mp__eq {
+  opacity: 1
+}
+
+.mp__eq i {
+  width: 3px;
+  height: 5px;
+  border-radius: 2px;
+  background: var(--rose)
+}
+
+.mp__pop--on .mp__row--on .mp__eq i {
+  animation: mpEq .9s ease-in-out infinite
+}
+
+.mp__pop--on .mp__row--on .mp__eq i:nth-child(2) {
+  animation-delay: .2s
+}
+
+.mp__pop--on .mp__row--on .mp__eq i:nth-child(3) {
+  animation-delay: .4s
+}
+
+@keyframes mpEq {
+
+  0%,
+  100% {
+    height: 4px
+  }
+
+  50% {
+    height: 14px
+  }
+}
+
+.mp__vol {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 4px 2px;
+  font: 400 14px/1 var(--sans);
+  color: var(--ink-soft)
+}
+
+.mp__vol input {
+  flex: 1;
+  min-width: 0;
+  height: 28px;
+  accent-color: var(--rose);
+  cursor: pointer
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .mp__row:hover:not(.mp__row--on) {
+    background: rgba(247, 230, 225, .55)
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .mp__pop {
+    animation: none
+  }
+
+  .mp__pop--on .mp__row--on .mp__eq i {
+    animation: none;
+    height: 10px
+  }
+}
+
+@media (prefers-reduced-transparency:reduce) {
+  .mp__pop {
+    background: #fffaf4
+  }
+}
+
+/* the closing scene sits above the sky layer (it is outside the page column, so it needs its own stacking) */
+.closing-wrap {
+  position: relative;
+  z-index: 1
+}
+
+.vp__credit {
+  margin: 6px 14px 0;
+  font-size: .62rem;
+  letter-spacing: .04em;
+  opacity: .55;
+  text-align: right
+}
+
+.vp__credit a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px
+}
+
+/* =====================================================================
+   ONE BUTTON SYSTEM (.xb) · thread pins · calendar popover · smooth motion
+   ===================================================================== */
+:root {
+  --spring: cubic-bezier(.34, 1.56, .64, 1);
+  --glide: cubic-bezier(.22, 1, .36, 1)
+}
+
+/* smooth by default: low-specificity so anything more specific still wins */
+:where(a, button, summary, [role=button], [role=tab]) {
+  transition: color .3s var(--glide), background-color .3s var(--glide), border-color .3s var(--glide), box-shadow .45s var(--glide), opacity .3s var(--glide), transform .5s var(--spring)
+}
+
+:where(a, button, [role=button], [role=tab]):focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 3px
+}
+
+html {
+  -webkit-tap-highlight-color: transparent
+}
+
+.xb {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 0 28px;
+  border: 0;
+  border-radius: 999px;
+  font: 500 15px/1 var(--sans);
+  letter-spacing: .03em;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+  transition: transform .55s var(--spring), box-shadow .5s var(--glide), background-color .3s, color .3s, filter .3s
+}
+
+.xb>* {
+  position: relative;
+  z-index: 1
+}
+
+.xb:active {
+  transform: scale(.965);
+  transition-duration: .12s
+}
+
+.xb:focus-visible {
+  outline: 0;
+  box-shadow: 0 0 0 3px #fffaf4, 0 0 0 5.5px rgba(194, 71, 99, .6)
+}
+
+.xb svg {
+  flex: none
+}
+
+.xb__i,
+.xb__chev {
+  transition: transform .5s var(--spring)
+}
+
+/* primary: a lit rose pill */
+.xb--primary {
+  color: #fffaf4;
+  background: linear-gradient(180deg, #d95f7b 0%, #c24763 52%, #aa3a54 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(86, 18, 40, .3), 0 1px 2px rgba(120, 30, 55, .25), 0 16px 30px -14px rgba(194, 71, 99, .75)
+}
+
+.xb--primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(105deg, transparent 32%, rgba(255, 255, 255, .5) 50%, transparent 68%);
+  transform: translateX(-130%);
+  transition: transform .9s var(--glide)
+}
+
+.xb--primary::after {
+  content: "";
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  top: 2px;
+  height: 44%;
+  z-index: 0;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, .34), rgba(255, 255, 255, 0));
+  pointer-events: none
+}
+
+/* ghost: frosted glass that fills from below */
+.xb--ghost {
+  color: var(--rose-deep);
+  background: rgba(255, 250, 244, .62);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+  box-shadow: inset 0 0 0 1.3px rgba(194, 71, 99, .34), inset 0 1px 0 rgba(255, 255, 255, .9), 0 10px 22px -16px rgba(120, 60, 80, .5)
+}
+
+.xb--ghost::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(180deg, #d95f7b, #c24763);
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  border-radius: inherit;
+  transition: transform .5s var(--glide)
+}
+
+.xb--done {
+  color: #fffaf4
+}
+
+.xb--done::before {
+  transform: scaleY(1)
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .xb--primary:hover {
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .55), inset 0 -1px 0 rgba(86, 18, 40, .3), 0 2px 4px rgba(120, 30, 55, .25), 0 22px 36px -14px rgba(194, 71, 99, .85)
+  }
+
+  .xb--primary:hover::before {
+    transform: translateX(130%)
+  }
+
+  .xb--primary:hover .xb__i {
+    transform: translate(2px, -2px)
+  }
+
+  .xb--ghost:hover {
+    color: #fffaf4;
+    transform: translateY(-2px);
+    box-shadow: inset 0 0 0 1.3px #c24763, 0 18px 30px -16px rgba(194, 71, 99, .7)
+  }
+
+  .xb--ghost:hover::before {
+    transform: scaleY(1)
+  }
+
+  .xb:hover .xb__chev {
+    transform: translateY(1px)
+  }
+}
+
+.xb--open .xb__chev {
+  transform: rotate(180deg)
+}
+
+/* ---------- Add to Calendar: the menu floats, the page never grows ---------- */
+.atc {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: max(14px, 2svh)
+}
+
+.atc__more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  color: var(--rose-deep);
+  font: 500 13px/1 var(--sans);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 10px 12px
+}
+
+.atc__more:hover {
+  color: var(--rose)
+}
+
+.atc .atc__menu {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 12px);
+  top: auto;
+  z-index: 40;
+  width: min(86vw, 300px);
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  text-align: left;
+  background: rgba(255, 250, 244, .82);
+  -webkit-backdrop-filter: blur(22px) saturate(1.7);
+  backdrop-filter: blur(22px) saturate(1.7);
+  border: 1px solid rgba(255, 255, 255, .85);
+  border-radius: 22px;
+  box-shadow: inset 0 1px 0 #fff, 0 28px 50px -22px rgba(110, 45, 70, .55), 0 4px 14px -6px rgba(110, 45, 70, .2);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-50%, 14px) scale(.96);
+  transform-origin: 50% 100%;
+  transition: opacity .28s var(--glide), transform .5s var(--spring), visibility 0s linear .5s
+}
+
+.atc .atc__menu--open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(-50%, 0) scale(1);
+  transition: opacity .28s var(--glide), transform .5s var(--spring), visibility 0s
+}
+
+.atc__menu li {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .3s var(--glide), transform .45s var(--glide)
+}
+
+.atc__menu--open li {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(.05s + var(--n, 0) * .045s)
+}
+
+.atc .atc__menu a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  color: var(--ink);
+  font: 400 15px/1.2 var(--sans);
+  text-decoration: none
+}
+
+.atc .atc__menu a svg {
+  opacity: .4;
+  transition: transform .4s var(--spring), opacity .3s
+}
+
+.atc .atc__menu a:hover,
+.atc .atc__menu a:focus-visible {
+  background: rgba(194, 71, 99, .1);
+  color: var(--rose-deep);
+  outline: 0
+}
+
+.atc .atc__menu a:hover svg {
+  opacity: .9;
+  transform: translate(2px, -2px)
+}
+
+.atc__hint {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: min(88vw, 300px);
+  text-align: center;
+  font: 400 12px/1.5 var(--sans);
+  color: var(--ink-soft)
+}
+
+/* ---------- the thread's pins are real buttons ---------- */
+.thread__knot {
+  pointer-events: auto;
+  cursor: pointer;
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin: -16px 0 0 -16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  border-radius: 50%;
+  opacity: 1;
+  transform: none;
+  animation: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: none
+}
+
+.thread__knot i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  margin: -3px 0 0 -3px;
+  border-radius: 50%;
+  background: #fffaf4;
+  box-shadow: inset 0 0 0 1px rgba(194, 71, 99, .35);
+  opacity: .45;
+  transform: scale(.75);
+  transition: transform .5s var(--spring), opacity .4s, box-shadow .4s, background-color .3s
+}
+
+.thread__knot--on i {
+  opacity: 1;
+  transform: scale(1);
+  animation: thKnotGlow 3.2s ease-in-out infinite
+}
+
+.thread__knot--cur i {
+  transform: scale(1.55);
+  background: #c24763;
+  box-shadow: 0 0 0 3px rgba(194, 71, 99, .18), 0 0 10px rgba(216, 120, 150, .6);
+  animation: none
+}
+
+.thread__knot b {
+  position: absolute;
+  left: calc(100% + 2px);
+  top: 50%;
+  transform: translate(-6px, -50%);
+  padding: 7px 12px 6px;
+  border-radius: 999px;
+  white-space: nowrap;
+  pointer-events: none;
+  font: 500 11px/1 var(--sans);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--rose-deep);
+  background: rgba(255, 250, 244, .9);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(194, 71, 99, .18);
+  box-shadow: 0 10px 22px -12px rgba(110, 45, 70, .5);
+  opacity: 0;
+  transition: opacity .25s var(--glide), transform .45s var(--spring)
+}
+
+.thread__knot:hover i,
+.thread__knot:focus-visible i {
+  transform: scale(1.7);
+  opacity: 1
+}
+
+.thread__knot:hover b,
+.thread__knot:focus-visible b,
+.thread__knot--tip b {
+  opacity: 1;
+  transform: translate(0, -50%)
+}
+
+.thread__knot:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 0
+}
+
+.thread__tie {
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  pointer-events: none
+}
+
+.thread__tie--on {
+  pointer-events: auto
+}
+
+.thread__tie:hover svg {
+  transform: scale(1.2)
+}
+
+.thread__tie svg {
+  transition: transform .5s var(--spring)
+}
+
+/* ---------- the other buttons, same family ---------- */
+.obtn {
+  transition: transform .5s var(--spring), box-shadow .5s var(--glide), filter .3s
+}
+
+.intro__hint {
+  padding: 13px 24px 12px;
+  font-size: 10.5px;
+  border-color: rgba(255, 255, 255, .85);
+  box-shadow: 0 14px 30px -12px rgba(110, 45, 70, .35), inset 0 1px 0 rgba(255, 255, 255, .95)
+}
+
+.intro__skip {
+  transition: transform .5s var(--spring), background-color .3s, color .3s, box-shadow .4s
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .intro__skip:hover {
+    background: #fffaf4;
+    color: var(--rose-deep);
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px -12px rgba(110, 45, 70, .5)
+  }
+
+  .music:hover {
+    transform: translateY(-2px)
+  }
+}
+
+.vp__tab {
+  transition: color .3s var(--glide)
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+  .xb,
+  .xb::before,
+  .xb__i,
+  .xb__chev,
+  .atc .atc__menu,
+  .atc__menu li,
+  .thread__knot i,
+  .thread__knot b {
+    transition-duration: .01ms !important;
+    transition-delay: 0s !important
+  }
+}
+
+@media (prefers-reduced-transparency:reduce) {
+
+  .xb--ghost,
+  .atc .atc__menu,
+  .thread__knot b {
+    background: #fffaf4;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none
+  }
+}
+
+/* =====================================================================
+   FOOTER · the beach, alive (butterflies, sea glitter, fireflies, a closing line)
+   ===================================================================== */
+.cf__zoom {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.03);
+  animation: cfKB 28s ease-in-out infinite alternate
+}
+
+.cf__zoom .cf__bg {
+  animation: none;
+  transform: none;
+  object-position: 50% 50%
+}
+
+.cf__bfs {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 3px rgba(80, 50, 70, .22))
+}
+
+.bf {
+  transition: opacity 1.2s ease .8s
+}
+
+.bw {
+  transform-box: view-box
+}
+
+.cf__petals i:nth-child(odd) {
+  background: radial-gradient(circle at 30% 28%, #fbd3dc, #ec92a8)
+}
+
+.cf__petals i:nth-child(even) {
+  background: radial-gradient(circle at 30% 28%, #fff6ec, #f1d2bf)
+}
+
+/* sunlight glittering on the sea (the sea sits at about 63–72% down the photo) */
+.cf__glint {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 63%;
+  height: 9%;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden
+}
+
+.cf__glint i {
+  position: absolute;
+  left: calc(6% + var(--i)*5.1%);
+  top: calc((var(--i)*37%) - (var(--i)*37%/100)*100%);
+  width: calc(14px + (var(--i) % 4)*6px);
+  height: 1.6px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, .95);
+  opacity: 0;
+  box-shadow: 0 0 6px 1px rgba(255, 236, 210, .8);
+  animation: cfGl 3.4s ease-in-out calc(var(--i)*-.55s) infinite
+}
+
+.cf__glint i:nth-child(3n) {
+  top: 22%
+}
+
+.cf__glint i:nth-child(3n+1) {
+  top: 54%
+}
+
+.cf__glint i:nth-child(3n+2) {
+  top: 84%
+}
+
+@keyframes cfGl {
+
+  0%,
+  100% {
+    opacity: 0;
+    transform: scaleX(.4)
+  }
+
+  50% {
+    opacity: .9;
+    transform: scaleX(1)
+  }
+}
+
+/* fireflies rising from the flower beds */
+.cf__flies {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden
+}
+
+.cf__flies i {
+  position: absolute;
+  bottom: 2%;
+  left: calc(3% + var(--i)*8.2%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  opacity: 0;
+  background: radial-gradient(circle, #fff7dc 0, #f6d48c 45%, rgba(246, 212, 140, 0) 72%);
+  box-shadow: 0 0 10px 3px rgba(246, 200, 120, .5);
+  animation: cfFly calc(11s + (var(--i)*1.2s)) ease-in-out calc(var(--i)*-1.8s) infinite
+}
+
+@keyframes cfFly {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0)
+  }
+
+  12% {
+    opacity: .9
+  }
+
+  50% {
+    transform: translate(16px, -26svh)
+  }
+
+  88% {
+    opacity: .7
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-12px, -50svh)
+  }
+}
+
+/* the closing line, over the white path */
+.cf__end {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: max(3%, env(safe-area-inset-bottom));
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 1.4s ease 2.4s, transform 1.4s var(--glide) 2.4s
+}
+
+.cf--on .cf__end {
+  opacity: 1;
+  transform: none
+}
+
+.cf__see {
+  margin: 0;
+  font: 500 11px/1 var(--sans);
+  letter-spacing: .3em;
+  text-transform: uppercase;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(40, 20, 60, .6)
+}
+
+.cf__date {
+  margin: 0;
+  font: 400 clamp(44px, 13vw, 58px)/1 'Allura', 'Pinyon Script', cursive;
+  white-space: nowrap;
+  background: linear-gradient(180deg, #fffbe8, #f4d489 70%, #e8b85a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 2px 8px rgba(50, 25, 70, .55))
+}
+
+.cf__swash {
+  width: 160px;
+  height: 14px;
+  color: #f4d489;
+  filter: drop-shadow(0 1px 4px rgba(50, 25, 70, .4))
+}
+
+.cf__sub {
+  margin: 0 0 6px;
+  font: 400 12px/1 var(--sans);
+  letter-spacing: .14em;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(40, 20, 60, .6)
+}
+
+/* small white pill button */
+.cf__top {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #fff;
+  color: #8c2f50;
+  font: 500 12px/1 var(--sans);
+  letter-spacing: .06em;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(60, 30, 80, .3);
+  transition: transform .35s var(--glide), box-shadow .35s var(--glide)
+}
+
+.cf__top:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 9px 22px rgba(60, 30, 80, .36)
+}
+
+.cf__top:active {
+  transform: scale(.97)
+}
+
+.cf__top:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px
+}
+
+/* dusk glow behind the closing lines so they read on the pale path */
+.cf__frame::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 46%;
+  z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 100%, rgba(70, 42, 100, .6), rgba(70, 42, 100, 0) 74%)
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .cf__zoom {
+    animation: none
+  }
+
+  .cf__glint,
+  .cf__flies {
+    display: none
+  }
+
+  .cf__end {
+    opacity: 1;
+    transform: none;
+    transition: none
+  }
+}
+
+/* ===== map section: small white pill buttons and a gold finish ===== */
+.vp__panel {
+  border: 1px solid transparent;
+  background: linear-gradient(var(--card), var(--card)) padding-box, linear-gradient(135deg, #f6e3ad, #c9a24d 48%, #f6e3ad) border-box;
+  box-shadow: 0 22px 44px -22px rgba(90, 60, 40, .35), 0 0 0 4px rgba(233, 207, 138, .14)
+}
+
+.vp__pill {
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 77, .75), 0 4px 12px -4px rgba(120, 80, 30, .3)
+}
+
+.vp__map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 77, .4), inset 0 -26px 26px -26px rgba(201, 162, 77, .28)
+}
+
+.vp__tag {
+  color: #a07a30
+}
+
+.vp__name {
+  position: relative;
+  padding-bottom: 12px
+}
+
+.vp__name::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 64px;
+  height: 7px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, #c9a24d 30%, #c9a24d 70%, transparent) center/100% 1px no-repeat
+}
+
+.vp__name::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  transform: rotate(45deg);
+  background: #d9b863;
+  box-shadow: 0 0 0 3px var(--card);
+  z-index: 1
+}
+
+.vp__body {
+  background: linear-gradient(180deg, rgba(255, 250, 244, 0), rgba(228, 222, 238, .72));
+  text-align: center
+}
+
+.wb {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 0 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  cursor: pointer;
+  font: 500 12.5px/1 var(--sans);
+  letter-spacing: .06em;
+  color: #8c2f50;
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform .35s var(--glide), box-shadow .35s var(--glide), background .35s var(--glide), color .35s var(--glide)
+}
+
+.wb--solid {
+  background: #fff;
+  border: 1px solid #d9b863;
+  box-shadow: 0 6px 16px -6px rgba(60, 30, 80, .28), inset 0 1px 0 #fff
+}
+
+.wb--glass {
+  background: rgba(255, 255, 255, .5);
+  -webkit-backdrop-filter: blur(10px) saturate(1.3);
+  backdrop-filter: blur(10px) saturate(1.3);
+  border: 1px solid rgba(201, 162, 77, .6);
+  box-shadow: 0 4px 12px -6px rgba(60, 30, 80, .22)
+}
+
+.wb__i {
+  flex: none;
+  transition: transform .4s var(--spring)
+}
+
+.wb:active {
+  transform: scale(.96);
+  transition-duration: .12s
+}
+
+.wb:focus-visible {
+  outline: 2px solid #c9a24d;
+  outline-offset: 3px
+}
+
+.wb--done {
+  background: linear-gradient(180deg, #f8e8b8, #e3bf68);
+  border-color: #c9a24d;
+  color: #5a3d0f
+}
+
+@media (hover:hover) {
+  .wb:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 22px -8px rgba(160, 120, 40, .5), 0 0 0 3px rgba(233, 207, 138, .28)
+  }
+
+  .wb--solid:hover .wb__i {
+    transform: translate(2px, -2px)
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+  .wb,
+  .wb__i {
+    transition: none
+  }
+}
+
+/* ===== Where: the evening-sky arch (the map is the window, white roses dress its shoulders) ===== */
+.vp .vp__panel {
+  max-width: 360px;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+  overflow: visible
+}
+
+.vp__script {
+  margin: -4px 0 18px;
+  text-align: center;
+  font: 400 clamp(48px, 14vw, 60px)/1 'Allura', 'Pinyon Script', cursive;
+  color: #fff;
+  text-shadow: 0 2px 16px rgba(60, 70, 110, .4);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1s ease .15s, transform 1s var(--glide) .15s
+}
+
+.screen--in .vp__script {
+  opacity: 1;
+  transform: none
+}
+
+.vp__arch {
+  position: relative;
+  margin: 0 6px
+}
+
+.vp .vp__map {
+  aspect-ratio: 1/1.1;
+  border-radius: 180px 180px 30px 30px;
+  border: 2px solid rgba(255, 255, 255, .92);
+  box-shadow: 0 0 0 5px rgba(241, 220, 156, .42), 0 0 0 6px rgba(201, 162, 77, .55), 0 26px 44px -22px rgba(50, 60, 100, .55)
+}
+
+.vp .vp__map::after {
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgba(201, 162, 77, .35)
+}
+
+.vp--drop .vp--drop .vp .vp__arch .vp__tabs {
+  position: absolute;
+  left: 50%;
+  bottom: -26px;
+  transform: translateX(-50%);
+  width: min(88%, 300px);
+  margin: 0;
+  z-index: 6;
+  background: rgba(255, 255, 255, .5);
+  -webkit-backdrop-filter: blur(12px) saturate(1.4);
+  backdrop-filter: blur(12px) saturate(1.4);
+  border: 1px solid rgba(201, 162, 77, .6);
+  box-shadow: 0 10px 22px -10px rgba(50, 40, 90, .4)
+}
+
+.vp .vp__pill {
+  background: #fff
+}
+
+.vp .vp__tab {
+  color: #4a3a5c;
+  font-size: 14px;
+  min-height: 42px
+}
+
+.vp .vp__tab[aria-selected="true"] {
+  color: #8c2f50
+}
+
+.vp .vp__body {
+  position: relative;
+  z-index: 3;
+  margin: -12px 0 0;
+  padding: 44px 18px 22px;
+  text-align: center;
+  border-radius: 26px;
+  background: rgba(255, 255, 255, .4);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, .85);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .8), 0 18px 34px -18px rgba(50, 60, 100, .45)
+}
+
+.vp .vp__tag {
+  color: #8a6420
+}
+
+.vp .vp__name {
+  color: #3d2a4c
+}
+
+.vp .vp__addr {
+  color: #5c4a68
+}
+
+.vp .vp__name::before {
+  box-shadow: none
+}
+
+.vp .vp__acts {
+  margin-top: 18px;
+  gap: 8px;
+  flex-wrap: nowrap
+}
+
+.vp .vp__acts .wb {
+  padding: 0 15px
+}
+
+.vp .vp__credit {
+  margin: 14px 0 0;
+  text-align: center;
+  color: rgba(58, 70, 84, .62);
+  opacity: 1
+}
+
+.vp::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background: radial-gradient(ellipse 130px 24px at 16% 9%, rgba(255, 255, 255, .7), transparent 72%), radial-gradient(ellipse 170px 28px at 86% 17%, rgba(255, 255, 255, .6), transparent 72%), radial-gradient(ellipse 120px 22px at 8% 46%, rgba(255, 255, 255, .5), transparent 72%)
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .vp__script {
+    opacity: 1;
+    transform: none;
+    transition: none
+  }
+}
+
+/* the footer scene starts exactly where the sky above it ends, so the page runs on into the wedding arch */
+.cf__veil {
+  background: linear-gradient(180deg, rgba(221, 232, 240, 1) 0, rgba(221, 232, 240, .72) 7%, rgba(221, 232, 240, 0) 28%, rgba(210, 226, 238, 0) 70%, rgba(205, 210, 228, .4) 100%)
+}
+
+/* ===== Countdown, refined: same lace, roses and ribbon, with gold, a script title and a soft glow ===== */
+.lcx {
+  --cbg: #f8e9e4;
+  --ctx: #4a2f38;
+  --crb: #b8944a;
+  background: radial-gradient(ellipse 80% 38% at 50% 50%, rgba(255, 252, 248, .75), transparent 70%), linear-gradient(180deg, #f9ebe6 0, #f7e6e1 48%, #f4e5e8 100%)
+}
+
+.lcx__mid::before {
+  content: "";
+  position: absolute;
+  inset: -6cqw -4cqw;
+  background: radial-gradient(ellipse at center, rgba(255, 253, 250, .8) 0, rgba(255, 253, 250, .5) 45%, transparent 72%);
+  z-index: -1;
+  pointer-events: none
+}
+
+.lcx__ttl {
+  font: 400 10.4cqw/.95 'Allura', 'Pinyon Script', cursive;
+  color: #8c2f50;
+  letter-spacing: 0;
+  text-shadow: 0 .3cqw 1.6cqw rgba(255, 255, 255, .8)
+}
+
+.lcx__ttl em {
+  font: 500 2cqw/1 var(--sans);
+  letter-spacing: .38em;
+  padding-left: .38em;
+  color: #8a6420;
+  opacity: 1;
+  margin-bottom: 1.2cqw
+}
+
+.lcx__row {
+  margin-top: 1.8cqw
+}
+
+.lcx__u {
+  min-width: 15cqw;
+  position: relative
+}
+
+.lcx__u+.lcx__u::before {
+  content: "";
+  position: absolute;
+  left: -.5cqw;
+  top: 4.2cqw;
+  width: 1.1cqw;
+  height: 1.1cqw;
+  background: #c9a24d;
+  transform: translateX(-50%) rotate(45deg)
+}
+
+.lcx__u b {
+  font: 400 9.4cqw/1 var(--serif);
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: 'lnum' 1, 'tnum' 1;
+  color: #3d2a4c
+}
+
+.lcx__u span {
+  font: 500 1.9cqw/1 var(--sans);
+  letter-spacing: .16em;
+  padding-left: .16em;
+  color: #6b5a74;
+  opacity: 1;
+  margin-top: 1.4cqw
+}
+
+.lcx__rose img {
+  filter: drop-shadow(0 .5cqw 1cqw rgba(60, 30, 50, .28))
+}
+
+/* ===== Calendar: same torn paper, tassel and hand-drawn ring, finished with gold ===== */
+.wc__wash {
+  filter: drop-shadow(.32cqw 0 0 rgba(217, 178, 94, .9)) drop-shadow(-.32cqw 0 0 rgba(217, 178, 94, .9)) drop-shadow(0 .32cqw 0 rgba(217, 178, 94, .9)) drop-shadow(0 -.32cqw 0 rgba(217, 178, 94, .9)) drop-shadow(0 2.4cqw 2.6cqw rgba(194, 71, 99, .22))
+}
+
+.wc__wash--b {
+  filter: none
+}
+
+.wc__sub {
+  color: #8a6420;
+  letter-spacing: .3em;
+  padding-left: .3em
+}
+
+.wc__sub.wc__ar {
+  color: #8a6420
+}
+
+.wc__pen path {
+  filter: drop-shadow(.55cqw .35cqw 0 rgba(233, 207, 138, .95)) drop-shadow(0 .8cqw .6cqw rgba(120, 30, 60, .3))
+}
+
+/* hijri line, flanked by gold diamonds */
+.wc__hint {
+  display: inline-grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 14px;
+  color: #8a6420;
+  font-weight: 500
+}
+
+.wc__hint::before,
+.wc__hint::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  background: #c9a24d;
+  transform: rotate(45deg);
+  box-shadow: 0 0 8px rgba(233, 207, 138, .9)
+}
+
+.wc__hint>span {
+  grid-area: auto
+}
+
+.wc__hint .wc__ar {
+  grid-area: auto;
+  color: #8a6420
+}
+
+.wc--en .wc__hint .wc__ar,
+.wc--ar .wc__hint .wc__en {
+  display: none
+}
+
+/* two gold sparkles twinkling at the paper's corners */
+.wc__sheet::before,
+.wc__sheet::after {
+  content: "";
+  position: absolute;
+  z-index: 11;
+  width: 1.8cqw;
+  height: 1.8cqw;
+  background: #f6e2a3;
+  transform: rotate(45deg);
+  box-shadow: 0 0 2.2cqw .6cqw rgba(246, 226, 163, .95);
+  opacity: 0;
+  pointer-events: none
+}
+
+.wc__sheet::before {
+  left: 2%;
+  top: 10%
+}
+
+.wc__sheet::after {
+  right: 4%;
+  bottom: 6%
+}
+
+.wc--on .wc__sheet::before {
+  animation: wcTwk 3.4s ease-in-out 3s infinite
+}
+
+.wc--on .wc__sheet::after {
+  animation: wcTwk 3.4s ease-in-out 4.4s infinite
+}
+
+@keyframes wcTwk {
+
+  0%,
+  100% {
+    opacity: 0;
+    transform: rotate(45deg) scale(.4)
+  }
+
+  50% {
+    opacity: 1;
+    transform: rotate(45deg) scale(1.15)
+  }
+}
+
+/* the same white-and-gold pill as the map and footer */
+.wc .xb--primary {
+  color: #8c2f50;
+  font-weight: 500;
+  background: linear-gradient(180deg, #fff, #fbf4f1);
+  border: 1px solid #d9b863;
+  box-shadow: 0 10px 20px -12px rgba(120, 50, 80, .5), inset 0 1px 0 #fff
+}
+
+.wc .xb--primary::after {
+  display: none
+}
+
+.wc .xb--primary::before {
+  background: linear-gradient(105deg, transparent 32%, rgba(233, 207, 138, .55) 50%, transparent 68%)
+}
+
+@media (hover:hover) {
+  .wc .xb--primary:hover {
+    box-shadow: 0 0 0 1px #c9a24d, 0 18px 30px -14px rgba(201, 162, 77, .8), inset 0 1px 0 #fff
+  }
+}
+
+.wc .xb--primary:focus-visible {
+  box-shadow: 0 0 0 3px #fffaf4, 0 0 0 5.5px rgba(201, 162, 77, .8)
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+  .wc__sheet::before,
+  .wc__sheet::after {
+    animation: none !important
+  }
+}
+
+/* ===== A day to remember: the rainy-window drawing, hung as one polaroid ===== */
+.dl__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #a05672
+}
+
+.dl__eyebrow::before,
+.dl__eyebrow::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  background: #d9b863;
+  transform: rotate(45deg)
+}
+
+.dl__title {
+  margin-top: 6px;
+  font: 400 clamp(42px, 12.4vw, 54px)/1.05 'Allura', 'Pinyon Script', cursive;
+  color: #8c2f50;
+  text-shadow: none
+}
+
+.dl__string {
+  stroke: #d7a9b6;
+  stroke-width: 1.6;
+  filter: none
+}
+
+.dl__peg {
+  background: linear-gradient(90deg, #e9d2c0, #f6e6d9 50%, #dcc0ad);
+  box-shadow: 0 2px 3px rgba(90, 40, 60, .3)
+}
+
+.dl__peg::after {
+  left: 50%;
+  right: auto;
+  top: 9px;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  border-radius: 50%;
+  background: #c9a07f
+}
+
+.dl__c {
+  background: #fff;
+  box-shadow: 0 14px 22px -12px rgba(122, 60, 84, .5)
+}
+
+.dl__c--held {
+  box-shadow: 0 26px 34px -14px rgba(122, 60, 84, .55)
+}
+
+.dl__c--photo {
+  padding: 9px 9px 0;
+  box-shadow: 0 18px 26px -14px rgba(122, 60, 84, .55)
+}
+
+.dl__ph {
+  position: relative;
+  margin-top: 0;
+  background: #e8e4ea
+}
+
+.dl__ph img {
+  object-position: 50% 42%
+}
+
+.dl__c--big {
+  padding-bottom: 14px
+}
+
+.dl__c--photo:not(.dl__c--big) {
+  padding: 6px 6px 0
+}
+
+.dl__c--photo:not(.dl__c--big) .dl__fog {
+  display: none
+}
+
+.dl__c--photo:not(.dl__c--big) .dl__cap {
+  bottom: 6px;
+  font-size: clamp(16px, calc(var(--w, 80px)*.22), 21px)
+}
+
+.dl__cap {
+  bottom: 8px;
+  font: 400 clamp(24px, calc(var(--w, 110px)*.12), 30px)/1 'Allura', 'Pinyon Script', cursive;
+  color: #8c2f50
+}
+
+.dl__c--date {
+  background: #fff7f3;
+  box-shadow: 0 14px 22px -12px rgba(122, 60, 84, .45), inset 0 0 0 1px rgba(194, 71, 99, .13)
+}
+
+.dl__c--venue {
+  background: #fbf1e6;
+  box-shadow: 0 14px 22px -12px rgba(122, 60, 84, .45), inset 0 0 0 1px rgba(194, 71, 99, .1)
+}
+
+.dl__date small,
+.dl__venue small {
+  color: #a05672
+}
+
+.dl__date b {
+  color: #c24763
+}
+
+.dl__date span,
+.dl__venue strong {
+  color: #3d2a4c
+}
+
+.dl__date em {
+  color: #a05672
+}
+
+.dl__date svg {
+  fill: #df7f97
+}
+
+.dl__venue span {
+  color: #8c2f50
+}
+
+.dl__hint {
+  color: #a05672
+}
+
+.dl__back {
+  border-color: rgba(194, 71, 99, .5);
+  color: #8c2f50
+}
+
+/* fog on the glass wipes away from left to right */
+.dl__fog {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background: rgba(238, 234, 242, .82);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+  clip-path: inset(0 0 0 0)
+}
+
+.dl--on .dl__fog {
+  animation: dlWipe 2.6s cubic-bezier(.5, 0, .3, 1) 1.2s forwards
+}
+
+@keyframes dlWipe {
+  to {
+    clip-path: inset(0 0 0 100%)
+  }
+}
+
+/* rain behind the cards */
+.dl__rain {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0
+}
+
+.dl__rain i {
+  position: absolute;
+  top: -70px;
+  left: var(--x);
+  width: 1.5px;
+  height: var(--l);
+  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(160, 120, 150, 0), rgba(150, 110, 140, .65));
+  opacity: 0
+}
+
+.dl--on .dl__rain i {
+  animation: dlRain var(--t) linear var(--d) infinite
+}
+
+@keyframes dlRain {
+  from {
+    transform: translateY(0);
+    opacity: 0
+  }
+
+  15% {
+    opacity: .55
+  }
+
+  to {
+    transform: translateY(calc(var(--H, 700px) + 80px));
+    opacity: 0
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .dl__rain {
+    display: none
+  }
+
+  .dl__fog {
+    display: none
+  }
+}
+
+.dl__c--target {
+  box-shadow: 0 0 0 2px rgba(194, 71, 99, .5), 0 0 26px rgba(223, 127, 151, .5) !important
+}
+
+/* ===== Landing: blessing line, drifting petals, lantern glow, light parallax, seal burst ===== */
+.hero__text {
+  top: 7.6%;
+  transform: translate3d(calc(var(--px, 0)*5px), calc(var(--py, 0)*3px), 0);
+  transition: transform .35s ease-out
+}
+
+.hero__bless {
+  margin: 0 0 7px;
+  font: italic 500 clamp(12px, 3.5cqw, 15px)/1.3 var(--serif);
+  letter-spacing: .14em;
+  color: var(--rose-deep, #a2324e);
+  text-shadow: 0 0 12px rgba(255, 250, 243, .95), 0 0 4px rgba(255, 250, 243, .9);
+  opacity: 0;
+  animation: hbIn 1.4s ease .6s forwards
+}
+
+@keyframes hbIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px)
+  }
+
+  to {
+    opacity: .95;
+    transform: none
+  }
+}
+
+.hero__fx {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+  transform: translate3d(calc(var(--px, 0)*-12px), calc(var(--py, 0)*-7px), 0);
+  transition: transform .45s ease-out
+}
+
+.hero__glow {
+  position: absolute;
+  width: 30cqw;
+  height: 30cqw;
+  margin-top: -15cqw;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 214, 140, .6), rgba(255, 214, 140, 0) 66%);
+  opacity: .5;
+  animation: hgBreathe 4.6s ease-in-out infinite;
+  will-change: opacity, transform
+}
+
+.hero__glow--l {
+  left: -12cqw;
+  top: 29%
+}
+
+.hero__glow--r {
+  right: -12cqw;
+  top: 30%;
+  animation-delay: -2.2s
+}
+
+@keyframes hgBreathe {
+
+  0%,
+  100% {
+    opacity: .3;
+    transform: scale(.92)
+  }
+
+  50% {
+    opacity: .85;
+    transform: scale(1.08)
+  }
+}
+
+.hero__petal {
+  position: absolute;
+  top: -4%;
+  left: var(--x);
+  width: var(--s);
+  height: calc(var(--s)*1.25);
+  border-radius: 72% 0 72% 0;
+  background: radial-gradient(circle at 30% 28%, #fbd3dc, #ec92a8);
+  box-shadow: 0 0 6px rgba(255, 255, 255, .7);
+  opacity: 0;
+  animation: hpFall var(--t) linear var(--d) infinite;
+  will-change: transform, opacity
+}
+
+.hero__petal:nth-child(3n+2) {
+  background: radial-gradient(circle at 30% 28%, #fff6ec, #f1d2bf)
+}
+
+@keyframes hpFall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0)
+  }
+
+  8% {
+    opacity: .9
+  }
+
+  35% {
+    transform: translate3d(calc(var(--sw)*.6), 38svh, 0) rotate(140deg)
+  }
+
+  65% {
+    transform: translate3d(calc(var(--sw)*-.6), 72svh, 0) rotate(250deg)
+  }
+
+  92% {
+    opacity: .7
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--sw)*.3), 108svh, 0) rotate(360deg)
+  }
+}
+
+/* tapping the seal: a ring of light and a few petals fly out */
+.intro__burst {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--fwi)*.05);
+  width: 0;
+  height: 0;
+  z-index: 2;
+  pointer-events: none
+}
+
+.intro__burst b {
+  position: absolute;
+  left: -60px;
+  top: -60px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px solid rgba(201, 162, 77, .9);
+  box-shadow: 0 0 26px 4px rgba(233, 200, 120, .65), inset 0 0 18px rgba(233, 200, 120, .5);
+  opacity: 0;
+  transform: scale(.3)
+}
+
+.intro__burst i {
+  position: absolute;
+  left: -5px;
+  top: -6px;
+  width: 10px;
+  height: 12px;
+  border-radius: 72% 0 72% 0;
+  background: radial-gradient(circle at 30% 28%, #f8c3cf, #d9607e);
+  opacity: 0;
+  transform: rotate(var(--a)) translateX(0)
+}
+
+.intro--opening .intro__burst b {
+  animation: ibRing 1.2s cubic-bezier(.2, .8, .3, 1) forwards
+}
+
+.intro--opening .intro__burst i {
+  animation: ibFly 1.5s cubic-bezier(.2, .8, .3, 1) forwards
+}
+
+@keyframes ibRing {
+  0% {
+    opacity: .95;
+    transform: scale(.3)
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(2.8)
+  }
+}
+
+@keyframes ibFly {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateX(0) scale(.4)
+  }
+
+  20% {
+    opacity: 1
+  }
+
+  100% {
+    opacity: 0;
+    transform: rotate(calc(var(--a) + 60deg)) translateX(calc(var(--r)*1.9)) scale(1.1)
+  }
+}
+
+@media (prefers-reduced-motion:reduce) {
+
+  .hero__fx,
+  .intro__burst {
+    display: none
+  }
+
+  .hero__bless {
+    animation: none;
+    opacity: .95
+  }
+
+  .hero__text {
+    transform: none
+  }
+}
+/* ───────── hero: full names + nikah line ───────── */
+.hero__full {
+  margin: 10px 0 2px;
+  font: italic 500 clamp(14px, 3.8cqw, 17px)/1.3 var(--serif);
+  color: var(--ink);
+  letter-spacing: .02em
+}
+.hero__nikah {
+  margin: 4px 0 0;
+  font: 500 clamp(11px, 3cqw, 12.5px)/1.3 var(--sans);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--rose-deep)
+}
+
+/* ───────── add to calendar: choose day ───────── */
+.atc__which { display: flex; justify-content: center; gap: 8px; margin: 0 0 12px }
+.atc__chip {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink-soft);
+  font: 500 12.5px/1 var(--sans);
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: 10px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .3s var(--glide), color .3s var(--glide), border-color .3s var(--glide), transform .2s var(--glide)
+}
+.atc__chip:active { transform: scale(.96) }
+.atc__chip--on { background: var(--rose); border-color: var(--rose); color: #fff }
+.atc__chip:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px }
+.atc__both {
+  display: block;
+  margin: 10px auto 0;
+  width: fit-content;
+  font: italic 500 15px/1.3 var(--serif);
+  color: var(--rose-deep);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--rose-soft)
+}
+
+/* ───────── calendar: the nikah day (outlined in a softer gold-rose) ───────── */
+.wc__d--alt { color: #a3702e; font-weight: 600; font-size: 7cqw }
+.wc__d--alt:focus-visible { outline: 2px solid #a3702e; outline-offset: 3px; border-radius: 50% }
+.wc__d--alt .wc__pen path { stroke: #b88a45 }
+.wc--on .wc__d--alt .wc__pen path { animation-delay: 3.3s }
+
+/* ───────── programme: two blessed days ───────── */
+.pg {
+  position: relative;
+  overflow: hidden;
+  padding: 84px 22px 100px;
+  background: linear-gradient(180deg, var(--bg), var(--blush) 55%, var(--bg));
+  text-align: center;
+  color: var(--ink)
+}
+.pg__leaf { position: absolute; pointer-events: none; opacity: .5; z-index: 0 }
+.pg__leaf--l { left: -36px; top: 40px; width: 112px; height: auto }
+.pg__leaf--r { right: -22px; bottom: 120px; width: 84px; height: auto; transform: scaleX(-1) }
+.pg__in { position: relative; z-index: 1; max-width: 420px; margin: 0 auto }
+.pg__eyebrow { margin: 0 0 6px; font: 500 12px/1 var(--sans); letter-spacing: .26em; text-transform: uppercase; color: var(--rose) }
+.pg__title { margin: 0 0 40px; font: 400 clamp(40px, 12cqw, 52px)/1.05 var(--script); color: var(--gold-name) }
+.pg__line { display: flex; flex-direction: column; align-items: center }
+.pg__knot { display: block; width: 1px; height: 38px; background: linear-gradient(var(--rose-soft), var(--rose)); position: relative; margin: 2px 0 }
+.pg__knot i { position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; border-radius: 50%; background: var(--rose); transform: translate(-50%, -50%); box-shadow: 0 0 0 5px var(--blush) }
+.pg__day {
+  position: relative;
+  width: 100%;
+  padding: 26px 22px 22px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  box-shadow: 0 14px 34px -22px rgba(120, 30, 60, .4);
+  text-align: left
+}
+.pg__day--main { border-color: var(--rose-soft); box-shadow: 0 18px 44px -20px rgba(194, 71, 99, .5); background: linear-gradient(165deg, #fffaf4, #fbeaea) }
+.pg__flag {
+  position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: var(--rose); color: #fff;
+  font: 500 10.5px/1 var(--sans); letter-spacing: .16em; text-transform: uppercase
+}
+.pg__head { display: flex; align-items: center; gap: 16px; margin-bottom: 16px }
+.pg__no { font: 500 64px/.9 var(--serif); color: var(--rose); min-width: 48px; text-align: center }
+.pg__name { margin: 0; font: 600 22px/1.15 var(--serif); letter-spacing: .02em }
+.pg__date { margin: 3px 0 0; font: 500 14px/1.3 var(--sans); color: var(--ink) }
+.pg__hijri { margin: 2px 0 0; font: italic 500 15px/1.3 var(--serif); color: var(--ink-soft) }
+.pg__facts { list-style: none; margin: 0 0 16px; padding: 14px 0 0; border-top: 1px solid var(--line); display: grid; gap: 10px }
+.pg__facts li { display: flex; gap: 10px; align-items: flex-start; font: 400 15px/1.45 var(--sans); color: var(--ink) }
+.pg__facts svg { flex: none; margin-top: 4px; color: var(--rose) }
+.pg__go {
+  display: inline-flex; align-items: center; gap: 7px;
+  font: 500 12.5px/1 var(--sans); letter-spacing: .12em; text-transform: uppercase;
+  color: var(--rose-deep); text-decoration: none;
+  padding: 11px 16px; border: 1px solid var(--rose-soft); border-radius: 999px;
+  transition: background .3s var(--glide), color .3s var(--glide), transform .2s var(--glide)
+}
+.pg__go:hover { background: var(--rose); color: #fff }
+.pg__go:active { transform: scale(.96) }
+.pg__go:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px }
+.pg__homes { margin: 46px 0 0 }
+.pg__homes-h { margin: 0 0 14px; font: 400 30px/1 var(--script); color: var(--gold-name) }
+.pg__homes ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px }
+.pg__homes li { display: grid; gap: 2px }
+.pg__homes b { font: 600 18px/1.2 var(--serif); letter-spacing: .02em }
+.pg__homes span { font: italic 500 16px/1.3 var(--serif); color: var(--ink) }
+.pg__homes small { font: 400 13px/1.4 var(--sans); color: var(--ink-soft) }
+.pg__share { margin: 38px 0 6px; font: italic 500 18px/1.3 var(--serif); color: var(--ink) }
+.pg__call { margin: 0; font: 400 13px/1.6 var(--sans); color: var(--ink-soft) }
+.pg__call a { color: inherit; text-decoration: none; padding: 6px 4px }
+.pg__call i { font-style: normal; margin: 0 6px }
+
+/* stagger inside the section */
+.pg__in.rv-ready .pg__day, .pg__in.rv-ready .pg__homes, .pg__in.rv-ready .pg__share { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--glide), transform .8s var(--glide) }
+.pg__in.rv-in .pg__day, .pg__in.rv-in .pg__homes, .pg__in.rv-in .pg__share { opacity: 1; transform: none }
+.pg__in.rv-in .pg__day--main { transition-delay: .18s }
+.pg__in.rv-in .pg__homes { transition-delay: .3s }
+.pg__in.rv-in .pg__share { transition-delay: .4s }
+@media (prefers-reduced-motion: reduce) {
+  .pg__in.rv-ready .pg__day, .pg__in.rv-ready .pg__homes, .pg__in.rv-ready .pg__share { opacity: 1; transform: none; transition: none }
+}
+
+/* ───────── venue panel: no-coordinates fallback ───────── */
+.vp__soon { gap: 10px; align-content: center; text-align: center; padding: 0 24px }
+.vp__soon-pin svg { width: 30px; height: 40px; display: block; margin: 0 auto 8px }
+.atc__chip { display: inline-flex; flex-direction: column; align-items: center; gap: 5px }
+.atc__chip small, .atc__chip span { display: block }
+
+/* ───────── opening envelope: soft pulse on the seal + quiet serif hint ───────── */
+.intro__ring { position: absolute; left: 49.6%; top: 52.2%; width: 0; height: 0; z-index: 2; pointer-events: none; transition: opacity .5s }
+.intro__ring i {
+  position: absolute; left: -17cqw; top: -17cqw; width: 34cqw; height: 34cqw; border-radius: 50%;
+  border: 1.5px solid rgba(201, 162, 77, .75);
+  animation: sealPulse 2.8s var(--glide) infinite
+}
+.intro__ring i + i { animation-delay: 1.4s }
+@keyframes sealPulse { 0% { transform: scale(.78); opacity: .8 } 80%, 100% { transform: scale(1.22); opacity: 0 } }
+.intro--opening .intro__ring, .intro--open .intro__ring { opacity: 0 }
+.intro__hint {
+  display: inline-flex; align-items: center; gap: 14px;
+  padding: 0; border: 0; border-radius: 0; background: none;
+  -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: none;
+  font: italic 500 19px/1 var(--serif); letter-spacing: .04em; text-transform: none;
+  color: var(--rose-deep);
+  text-shadow: 0 1px 10px rgba(255, 250, 244, .95), 0 0 18px rgba(255, 250, 244, .9)
+}
+.intro__hint em { display: block; width: 7px; height: 7px; background: #c9a24d; transform: rotate(45deg); flex: none }
+@media (prefers-reduced-motion: reduce) { .intro__ring i { animation: none; opacity: .5; transform: none } }

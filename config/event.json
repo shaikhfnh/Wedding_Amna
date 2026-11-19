@@ -1,0 +1,115 @@
+{
+  "groom": "Nirjas",
+  "bride": "Amna",
+  "groomFull": "Muhammed Nirjas",
+  "brideFull": "Fathima Amna",
+  "title": "Wedding Reception of Fathima Amna & Muhammed Nirjas",
+  "start": "2027-01-02T11:00:00+05:30",
+  "durationMinutes": 180,
+  "timeZone": "Asia/Kolkata",
+  "tzLabel": "IST",
+  "displayDay": "Saturday",
+  "displayDate": "2",
+  "displayMonthYear": "January, 2027",
+  "displayTime": "11 AM",
+  "hijri": "24 Rajab 1448 AH",
+  "venue": {
+    "line1": "Shadhi Mahal Auditorium,",
+    "line2": "Customs Road, Vadakara.",
+    "addressOneLine": "Shadhi Mahal Auditorium, Customs Road, Vadakara",
+    "mapQuery": "Shadhi Mahal Auditorium, Customs Road, Vadakara, Kerala, India",
+    "mapUrl": "https://maps.app.goo.gl/7YA9vyRB2GWq1BSLA"
+  },
+  "nikah": {
+    "title": "Nikah of Fathima Amna & Muhammed Nirjas",
+    "start": "2027-01-01T16:00:00+05:30",
+    "durationMinutes": 90,
+    "displayDay": "Friday",
+    "displayDate": "1",
+    "displayMonthYear": "January, 2027",
+    "displayTime": "4 PM",
+    "hijri": "23 Rajab 1448 AH",
+    "venue": {
+      "line1": "Valiya Juma Masjid,",
+      "line2": "Thazhe Angadi, Vadakara.",
+      "addressOneLine": "Valiya Juma Masjid, Thazhe Angadi, Vadakara",
+      "mapQuery": "Valiya Juma Masjid, Thazhe Angadi Rd, Vatakara, Kerala 673103, India",
+      "mapUrl": "https://maps.app.goo.gl/MozHADomA8SZgvKa7"
+    }
+  },
+  "blessing": [
+    "With the blessings of Allah,",
+    "We joyfully invite you to the wedding reception of"
+  ],
+  "closing": {
+    "line": "May Allah bless this union with love, mercy and barakah.",
+    "arabic": "بَارَكَ اللَّهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا وَجَمَعَ بَيْنَكُمَا فِي خَيْر",
+    "thanks": "Jazakumullahu Khairan"
+  },
+  "families": [
+    {
+      "who": "Fathima Amna",
+      "house": "Dua House",
+      "place": "Aravindha Gosh Road, Puduppanam, Vadakara"
+    },
+    {
+      "who": "Muhammed Nirjas",
+      "house": "Puthiya Peedikayilakath House",
+      "place": "VV Road, Vadakara"
+    }
+  ],
+  "contact": {
+    "line": "Sharing the happiness: Family & Friends",
+    "phones": [
+      "8078020164",
+      "9961292527"
+    ]
+  },
+  "program": [],
+  "rsvp": {
+    "enabled": false,
+    "whatsapp": "",
+    "deadline": ""
+  },
+  "music": {
+    "enabled": true,
+    "src": "/media/song-2.mp3",
+    "picker": false,
+    "volume": 0.5,
+    "tracks": [
+      {
+        "id": "song2",
+        "name": "Song 2",
+        "sub": "Bridal entry",
+        "src": "/media/song-2.mp3"
+      }
+    ]
+  },
+  "siteUrl": "",
+  "venues": [
+    {
+      "id": "reception",
+      "tab": "Reception",
+      "tag": "Wedding reception",
+      "when": "Sat 2 Jan · 11 AM",
+      "name": "Shadhi Mahal Auditorium",
+      "place": "Customs Road · Vadakara",
+      "mapQuery": "Shadhi Mahal Auditorium, Customs Road, Vadakara, Kerala, India",
+      "mapUrl": "https://maps.app.goo.gl/jHwfGkCVAcfnWTQdA",
+      "lat": 11.6004557,
+      "lng": 75.5829301
+    },
+    {
+      "id": "nikah",
+      "tab": "Nikah",
+      "tag": "Nikah ceremony",
+      "when": "Fri 1 Jan · 4 PM",
+      "name": "Valiya Juma Masjid",
+      "place": "Thazhe Angadi · Vadakara",
+      "mapQuery": "Valiya Juma Masjid, Thazhe Angadi Rd, Vatakara, Kerala 673103, India",
+      "mapUrl": "https://maps.app.goo.gl/MozHADomA8SZgvKa7",
+      "lat": 11.598163,
+      "lng": 75.580203
+    }
+  ]
+}

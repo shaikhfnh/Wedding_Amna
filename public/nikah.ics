@@ -1,0 +1,29 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Wedding Invitation//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+uid:nikah-fathima-amna-muhammed-nirjas-20270101t103000z@invitation
+DTSTAMP:20261119T143334Z
+DTSTART:20270101T103000Z
+DTEND:20270101T120000Z
+SUMMARY:Nikah of Fathima Amna & Muhammed Nirjas
+LOCATION:Valiya Juma Masjid\, Thazhe Angadi\, Vadakara
+DESCRIPTION:Nikah of Fathima Amna & Muhammed Nirjas\nFriday\, 1 January\, 
+ 2027\, 4 PM IST.\nValiya Juma Masjid\, Thazhe Angadi\, Vadakara\nKindly g
+ race the occasion with your presence and duas.
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Nikah of Fathima Amna & Muhammed Nirjas is tomorrow
+TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Nikah of Fathima Amna & Muhammed Nirjas starts in 3 hours
+TRIGGER:-PT3H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

@@ -1,0 +1,54 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Wedding Invitation//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+uid:nikah-fathima-amna-muhammed-nirjas-20270101t103000z@invitation
+DTSTAMP:20261119T143334Z
+DTSTART:20270101T103000Z
+DTEND:20270101T120000Z
+SUMMARY:Nikah of Fathima Amna & Muhammed Nirjas
+LOCATION:Valiya Juma Masjid\, Thazhe Angadi\, Vadakara
+DESCRIPTION:Nikah of Fathima Amna & Muhammed Nirjas\nFriday\, 1 January\, 
+ 2027\, 4 PM IST.\nValiya Juma Masjid\, Thazhe Angadi\, Vadakara\nKindly g
+ race the occasion with your presence and duas.
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Nikah of Fathima Amna & Muhammed Nirjas is tomorrow
+TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Nikah of Fathima Amna & Muhammed Nirjas starts in 3 hours
+TRIGGER:-PT3H
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+uid:reception-fathima-amna-muhammed-nirjas-20270102t053000z@invitation
+DTSTAMP:20261119T143334Z
+DTSTART:20270102T053000Z
+DTEND:20270102T083000Z
+SUMMARY:Wedding Reception of Fathima Amna & Muhammed Nirjas
+LOCATION:Shadhi Mahal Auditorium\, Customs Road\, Vadakara
+DESCRIPTION:Wedding Reception of Fathima Amna & Muhammed Nirjas\nSaturday\
+ , 2 January\, 2027\, 11 AM IST.\nShadhi Mahal Auditorium\, Customs Road\,
+  Vadakara\nKindly grace the occasion with your presence and duas.
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Wedding Reception of Fathima Amna & Muhammed Nirjas is tomorro
+ w
+TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Wedding Reception of Fathima Amna & Muhammed Nirjas starts in 
+ 3 hours
+TRIGGER:-PT3H
+END:VALARM
+END:VEVENT
+END:VCALENDAR
