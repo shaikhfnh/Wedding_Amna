@@ -5,14 +5,16 @@ CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
 uid:reception-fathima-amna-muhammed-nirjas-20270102t053000z@invitation
-DTSTAMP:20261119T143334Z
+DTSTAMP:20261119T144830Z
 DTSTART:20270102T053000Z
 DTEND:20270102T083000Z
 SUMMARY:Wedding Reception of Fathima Amna & Muhammed Nirjas
 LOCATION:Shadhi Mahal Auditorium\, Customs Road\, Vadakara
 DESCRIPTION:Wedding Reception of Fathima Amna & Muhammed Nirjas\nSaturday\
  , 2 January\, 2027\, 11 AM IST.\nShadhi Mahal Auditorium\, Customs Road\,
-  Vadakara\nKindly grace the occasion with your presence and duas.
+  Vadakara\nKindly grace the occasion with your presence and duas.\nInvita
+ tion: https://amna-rijas.netlify.app
+URL:https://amna-rijas.netlify.app
 STATUS:CONFIRMED
 TRANSP:OPAQUE
 BEGIN:VALARM
